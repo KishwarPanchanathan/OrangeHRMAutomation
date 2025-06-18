@@ -39,7 +39,8 @@ public class Login {
 		System.out.println("Is Username Field Present: " + userNameField.isDisplayed());
 		if(userNameField.isDisplayed()) {
 			System.out.print("Enter your username: ");
-			String username = scan.next();
+//			String username = scan.next();
+			String username = "Admin";
 			userNameField.sendKeys(username);
 		}
 		
@@ -48,7 +49,8 @@ public class Login {
 		System.out.println("Is Password Field Present: " + passwordField.isDisplayed());
 		if(passwordField.isDisplayed()) {
 			System.out.print("Enter your password: ");
-			String password = scan.next();
+//			String password = scan.next();
+			String password = "admin123";
 			passwordField.sendKeys(password);
 		}
 		
@@ -59,10 +61,49 @@ public class Login {
 			loginButton.click();
 		}
 		
-		Thread.sleep(5000);
+		
+		// validating home page
+		WebElement dashboardPage = driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[1]/header/div[1]/div[1]/span/h6"));
+		System.out.println("Dashboard page is displayed: " + dashboardPage.isDisplayed());
+		
+		
+		// Leave option
+		WebElement leaveOption = driver.findElement(By.xpath("//a/span[text()='Leave']"));
+		System.out.println("Leave options is displayed: " + leaveOption.isDisplayed());
+		leaveOption.click();
+		System.out.println("Leave Option is clicked..");
+		Thread.sleep(3000);
+		WebElement leaveHeader = driver.findElement(By.xpath("//h6[text()='Leave']"));
+		
+
+		System.out.println("Leave header is displayed: " + leaveHeader.isDisplayed());
+		
+		/* leave list will show if the screen is normal but when you
+		 * resize the page the list will hide so we need to write a condition 
+		 */
+		
+		// Leave List
+		WebElement leaveListHeading = driver.findElement(By.xpath("//h5[text()='Leave List']"));
+		System.out.println("Leave List Heading is displayed: " + leaveListHeading.isDisplayed());
+
+		WebElement upCaret = driver.findElement(By.xpath("//button/i[contains(@class,'oxd-icon bi-caret-up-fill')]"));
+		upCaret.click();
+		System.out.println("Up Caret is clicked...");
+		WebElement downCaret = driver.findElement(By.xpath("//button/i[contains(@class,'oxd-icon bi-caret-down-fill')]"));
+		downCaret.click();
+		
+		System.out.println("is down caret displayed: " + downCaret.isDisplayed());
 		
 		
 		
+		Thread.sleep(3000);
+		
+		if(!downCaret.isDisplayed()) {
+			upCaret.click();
+		}
+		
+		
+		// closing the driver
 		driver.quit();
 		
 		
