@@ -1,6 +1,7 @@
 package selenium.OrangeHRM;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Scanner;
 
 import org.openqa.selenium.By;
@@ -9,6 +10,39 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class Login {
+	
+	static void selectMonthAndYear(WebDriver driver, String month, String year) {
+		while(true) {
+			
+			String currentMonth = driver.findElement(By.xpath("//ul/li/div[contains(@class,'selector-month')]/p")).getText();
+			String currentYear = driver.findElement(By.xpath("//ul/li/div[contains(@class,'selector-year')]/p")).getText();
+			
+			if(currentMonth.equals(month) && currentYear.equals(year)) {
+				break;
+			}
+			
+			WebElement nextButton = driver.findElement(By.xpath("//button/i[@class='oxd-icon bi-chevron-right']"));
+			WebElement previousButton = driver.findElement(By.xpath("//div[@class='oxd-calendar-header']//button/i[@class='oxd-icon bi-chevron-left']"));
+//			nextButton.click();
+			previousButton.click();
+			
+		}
+	}
+	
+	static void selectDate(WebDriver driver, String date) {
+		
+		List<WebElement> dates = driver.findElements(By.xpath("//div[@class='oxd-calendar-dates-grid']/div[contains(@class,'date-wrapper')]/div"));
+		
+		for(WebElement day: dates) {
+		
+			if(day.getText().equals(date)) {
+				System.out.println(day.getText() + " : " + date);
+				day.click();
+				
+			}
+				
+		}
+	}
 	
 	public static void main(String[] args) throws InterruptedException {
 		WebDriver driver = new ChromeDriver();
@@ -101,6 +135,32 @@ public class Login {
 		if(!downCaret.isDisplayed()) {
 			upCaret.click();
 		}
+		
+		
+		
+		// From Date
+		/*
+		
+		fromDate.clear(); // clear is not working
+		System.out.println("From Date is displayed: " + fromDate.isDisplayed());
+		fromDate.sendKeys("2024-03-19");
+		*/
+		
+		
+		// selecting date using date picker
+		String year = "2024";
+		String month = "December";
+		String day = "19";
+		
+		WebElement fromDate = driver.findElement(By.xpath("//label[text()='From Date']//ancestor::div[@class='oxd-input-group oxd-input-field-bottom-space']//div[@class='oxd-date-input']/input[@class='oxd-input oxd-input--active']"));
+		
+		fromDate.click();
+		
+		
+		selectMonthAndYear(driver, month, year);
+		selectDate(driver, day);
+		
+		
 		
 		
 		// closing the driver
